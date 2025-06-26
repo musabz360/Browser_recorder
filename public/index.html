@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stagehand Recorder</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    button { font-size: 1rem; padding: 0.5rem 1rem; margin: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h2>Browser Interaction Recorder</h2>
+  <button onclick="start()">Open Browser</button>
+  <button onclick="finish()">Finish & Save</button>
+
+  <script>
+    async function start() {
+      await fetch("/start", { method: "POST" });
+      alert("Browser started. Interact with it.");
+    }
+
+    async function finish() {
+      await fetch("/finish", { method: "POST" });
+      alert("Browser closed and events saved.");
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") finish();
+    });
+  </script>
+</body>
+</html>
