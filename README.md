@@ -85,3 +85,36 @@ A Node.js/TypeScript application for recording browser interactions using the [S
 ## License
 
 MIT
+
+## Deploying to Google Cloud Run
+
+### 1. Build and Push the Container
+
+Replace `<PROJECT_ID>` and `<REGION>` with your GCP project and region.
+
+```sh
+# Authenticate with Google Cloud
+ gcloud auth login
+ gcloud config set project <PROJECT_ID>
+
+# Build the container image
+ gcloud builds submit --tag gcr.io/<PROJECT_ID>/browser-ui-recorder
+```
+
+### 2. Deploy to Cloud Run
+
+```sh
+gcloud run deploy browser-ui-recorder \
+  --image gcr.io/<PROJECT_ID>/browser-ui-recorder \
+  --platform managed \
+  --region <REGION> \
+  --allow-unauthenticated \
+  --port 8080
+```
+
+- The service will be available at the URL provided by Cloud Run after deployment.
+- Cloud Run expects the app to listen on port 8080. Update your `recorder.ts` to use `process.env.PORT || 8080` for the port.
+
+### 3. (Optional) Set Environment Variables
+
+You can pass environment variables using the `--set-env-vars` flag in the `gcloud run deploy` command.
